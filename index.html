@@ -98,9 +98,14 @@
         videoContainer.innerHTML = '';
         videoContainer.appendChild(iframe);
 
-        // After 90 seconds, stop the video, hide video container, and show text container
+        // After 10 seconds, play the video
         setTimeout(function () {
-          iframe.src = ''; // Stop the video
+          iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+        }, 10000);
+
+        // After 120 seconds, stop the video, hide video container, and show text container
+        setTimeout(function () {
+          iframe.contentWindow.postMessage('{"event":"command","func":"stopVideo","args":""}', '*');
           videoContainer.style.display = 'none';
           textContainer.style.display = 'block';
 
