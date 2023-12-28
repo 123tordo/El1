@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Page</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: black;
+      color: red;
+      font-size: 24px;
+    }
+    #video-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 98vw;
+      height: 56.25vw; /* 16:9 aspect ratio */
+      max-height: 98vh;
+      display: none;
+    }
+    #text-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<div id="text-container">
+  Prepara-te, agora é a tua vez de cantar, carrega no PLAY
+</div>
+
+<div id="video-container"></div>
+
+<script>
+  function getRandomVideo() {
+    const videoList = [
+      'https://youtu.be/yEbrvMljMCg?feature=shared&t=10'
+'https://youtu.be/GJkuTx1DQzg?feature=shared&t=15'
+'https://youtu.be/1q-1Bpy168g?feature=shared&t=12'
+
+      'https://www.youtube.com/embed/HuYMpOlYGZM?feature=shared&t=2'
+    ];
+
+    const randomIndex = Math.floor(Math.random() * videoList.length);
+    return videoList[randomIndex];
+  }
+
+  function playRandomVideo() {
+    const videoContainer = document.getElementById('video-container');
+    const textContainer = document.getElementById('text-container');
+
+    // Show the text container and hide the video container
+    textContainer.style.display = 'block';
+    videoContainer.style.display = 'none';
+
+    // Set the initial text
+    textContainer.innerHTML = 'Prepara-te, agora é a tua vez de cantar, carrega no PLAY';
+
+    // After 6 seconds, hide text container and show video container
+    setTimeout(function () {
+      textContainer.style.display = 'none';
+      videoContainer.style.display = 'block';
+
+      const randomVideoUrl = getRandomVideo();
+
+      // Create an iframe element with the random video URL
+      const iframe = document.createElement('iframe');
+      iframe.src = randomVideoUrl;
+      iframe.width = '100%';
+      iframe.height = '100%';
+      iframe.allow = 'autoplay; encrypted-media';
+
+      // Append the iframe to the video container
+      videoContainer.innerHTML = '';
+      videoContainer.appendChild(iframe);
+
+      // After 90 seconds, stop the video, hide video container, and show text container
+      setTimeout(function () {
+        iframe.src = '';  // Stop the video
+        videoContainer.style.display = 'none';
+        textContainer.style.display = 'block';
+
+        // Set the second text
+        textContainer.innerHTML = 'Lança o dado outra vez, lê o código para um novo desafio';
+      }, 90000);
+    }, 6000);
+  }
+
+  // Start playing the random video when the page loads
+  window.onload = playRandomVideo;
+
+  // Do not repeat the process after the initial execution
+</script>
+
+</body>
+</html>
+
